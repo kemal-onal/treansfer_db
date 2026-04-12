@@ -9,7 +9,7 @@ app.secret_key = 'cmpe321_super_secret_key' # sessionlar icin gerekli
 # veritabani baglantisi fonksiyonu
 def get_db_connection():
     return mysql.connector.connect(
-        host='localhost',
+        host='db',
         user='root', # kendi mysql kullanici adin
         password='password', # kendi mysql sifren
         database='transferdb'
