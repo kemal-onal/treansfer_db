@@ -13,3 +13,5 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: transferdb
+    volumes:
+      - ../init.sql:/docker-entrypoint-initdb.d/init.sql
