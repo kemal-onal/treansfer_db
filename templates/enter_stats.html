@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Maç İstatistikleri Girişi</title>
+    <style>
+        input[type="number"] { width: 50px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px;}
+        th, td { border: 1px solid black; padding: 5px; text-align: center;}
+    </style>
+</head>
+<body>
+    <h2>{{ match.home_name }} vs {{ match.away_name }} - İstatistik Girişi</h2>
+
+    <form action="/save_stats" method="POST">
+        <input type="hidden" name="match_id" value="{{ match.match_ID }}">
+        
+        <h3>Genel Maç Bilgileri</h3>
+        <label>Ev Sahibi Golü: <input type="number" name="home_goals" required min="0"></label> | 
+        <label>Deplasman Golü: <input type="number" name="away_goals" required min="0"></label> | 
+        <label>Seyirci Sayısı: <input type="number" name="attendance" required min="0"></label>
+        
+        <h3>Oyuncu İstatistikleri</h3>
+        <table>
+            <tr>
+                <th>Takım</th><th>Oyuncu</th><th>11'de mi?</th>
+                <th>Oynadığı Dk</th><th>Gol</th><th>Asist</th>
+                <th>Sarı K.</th><th>Kırmızı K.</th><th>Reyting (1-10)</th>
+            </tr>
+            {% for player in players %}
+            <tr>
+                <input type="hidden" name="player_id" value="{{ player.player_id }}">
+                
+                <td>{{ player.club_name }}</td>
+                <td>{{ player.name }} {{ player.surname }}</td>
+                <td>{{ 'Evet' if player.is_starter else 'Hayır' }}</td>
+                <td><input type="number" name="minutes_{{ player.player_id }}" value="0" min="0" max="120"></td>
+                <td><input type="number" name="goals_{{ player.player_id }}" value="0" min="0"></td>
+                <td><input type="number" name="assists_{{ player.player_id }}" value="0" min="0"></td>
+                <td><input type="number" name="yellow_{{ player.player_id }}" value="0" min="0" max="2"></td>
+                <td><input type="number" name="red_{{ player.player_id }}" value="0" min="0" max="1"></td>
+                <td><input type="number" name="rating_{{ player.player_id }}" value="6.0" step="0.1" min="1.0" max="10.0"></td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <button type="submit" style="padding: 10px 20px; font-size: 16px;">İstatistikleri Kaydet ve Maçı Bitir</button>
+    </form>
+    
+    <br><a href="/dashboard">İptal ve Geri Dön</a>
+</body>
+</html>
